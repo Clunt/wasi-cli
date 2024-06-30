@@ -1,18 +1,14 @@
 interface environment {
-  /// Get the POSIX-style environment variables.
+  /// 获取POSIX风格的环境变量。
   ///
-  /// Each environment variable is provided as a pair of string variable names
-  /// and string value.
+  /// 每个环境变量都以一对字符串变量名和字符串值的形式提供。
   ///
-  /// Morally, these are a value import, but until value imports are available
-  /// in the component model, this import function should return the same
-  /// values each time it is called.
+  /// 道义上讲，这些是值导入，但在组件模型中可用值导入之前，此导入函数每次调用时应返回相同的值。
   get-environment: func() -> list<tuple<string, string>>;
 
-  /// Get the POSIX-style arguments to the program.
+  /// 获取程序的POSIX风格参数。
   get-arguments: func() -> list<string>;
 
-  /// Return a path that programs should use as their initial current working
-  /// directory, interpreting `.` as shorthand for this.
+  /// 返回程序应该用作其初始化当前工作目录的路径，`.`解释为此路径的简写。
   initial-cwd: func() -> option<string>;
 }
