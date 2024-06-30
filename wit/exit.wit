@@ -1,4 +1,4 @@
 interface exit {
-  /// Exit the current instance and any linked instances.
+  /// 退出当前实例及所有关联实例。
   exit: func(status: result);
 }
