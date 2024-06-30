@@ -1,25 +1,24 @@
 # WASI CLI World
 
-A proposed [WebAssembly System Interface](https://github.com/WebAssembly/WASI) API.
+[WebAssembly系统接口(WebAssembly System Interface)](https://github.com/WebAssembly/WASI)API提案。
 
-### Current Phase
+### 当前阶段（Current Phase）
 
-wasi-cli is currently in [Phase 3].
+wasi-cli目前处于[第3阶段(Phase 3)][Phase 3]。
 
 [Phase 3]:  https://github.com/WebAssembly/WASI/blob/main/Proposals.md#phase-3---implementation-phase-cg--wg
 
-### Champions
+### 拥护者（Champions）
 
 - Dan Gohman
 
-### Portability Criteria
+### 可移植性标准（Portability Criteria）
 
-WASI CLI must have host implementations which can pass the testsuite
-on at least Windows, macOS, and Linux.
+WASI CLI必须有至少可以在Windows、macOS和Linux上通过测试套件(testsuite)的主机实现。
 
-WASI CLI must have at least two complete independent implementations.
+WASI CLI必须至少有两个完整独立的实现。
 
-## Table of Contents
+## 目录（Table of Contents）
 
 - [Introduction](#introduction)
 - [Goals [or Motivating Use Cases, or Scenarios]](#goals-or-motivating-use-cases-or-scenarios)
@@ -34,86 +33,70 @@ WASI CLI must have at least two complete independent implementations.
 - [Stakeholder Interest & Feedback](#stakeholder-interest--feedback)
 - [References & acknowledgements](#references--acknowledgements)
 
-### Introduction
+### 介绍（Introduction）
 
-Wasi-cli a [World] proposal for a Command-Line Interface (CLI) environment. It provides APIs commonly available in such environments, such as filesystems and sockets, and also provides command-line facilities such as command-line arguments, environment variables, and stdio.
+Wasi-cli是用于命令行界面(Command-Line Interface, CLI)环境的[world]提案。它提供了此类环境中常用的API，例如文件系统(filesystems)和套接字(sockets)，还提供了命令行功能(command-line facilities)如命令行参数(command-line arguments)、环境变量(environment variables)和标准输入输出(stdio)。
 
 [World]: https://github.com/WebAssembly/component-model/blob/main/design/mvp/WIT.md#wit-worlds
 
-### Goals
+### 目标（Goals）
 
-Wasi-cli aims to be useful for:
+Wasi-cli旨在用于以下用途：
 
- - Interactive command-line argument programs.
+ - 交互式命令行参数程序。
 
- - Servers that use filesystems, sockets, and related APIs and expect to be started with
-   a CLI-style command-line.
+ - 使用文件系统、套接字和相关API并且期望使用CLI央视命令行启动的服务器。
 
- - Stream filters that read from standard input and write to standard output.
+ - 从标准输入读取并写入标准输入的流过滤器。
 
-### Non-goals
+### 非目标（Non-goals）
 
-Wasi-cli is not aiming to significantly re-imagine the concept of command-line interface programs. While WASI as a whole is exploring ideas such as [Typed Main], wasi-cli sticks to the traditional list-of-strings style command-line arguments.
+Wasi-cli并不旨在彻底重新构想命令行界面程序的概念。虽然WASI整体上正在探索诸如[Typed Main]之类的想法，但wasi-cli坚持使用传统的字符串列表样式(list-of-strings style)的命令行参数。
 
 [Typed Main]: https://sunfishcode.github.io/typed-main-wasi-presentation/
 
-### API walk-through
+### API详解（API walk-through）
 
-The full API documentation can be found [here](command.md).
+完整的API文档可以在[这里](command.md)找到。
 
-TODO [Walk through of how someone would use this API.]
+TODO [演示如何使用此 API。]
 
-#### [Use case 1]
+#### [用例1]
 
-[Provide example code snippets and diagrams explaining how the API would be used to solve the given problem]
+[提供示例代码片段和图表，解释如何使用API来解决给定的问题]
 
-#### [Use case 2]
+#### [用例2]
 
 [etc.]
 
-### Detailed design discussion
+### 详细设计讨论（Detailed design discussion）
 
-#### Should stdout be an `output-stream`?
+#### stdout应该是`output-stream`吗？（Should stdout be an `output-stream`?）
 
-For server use cases, standard output (stdout) is typically used as a log,
-where it's typically not meaningfully blocking, async, or fallible. It's just
-a place for the program to send messages to and forget about them. One option
-would be to give such use cases a dedicated API, which would have a single
-function to allow printing strings that doesn't return a `result`, meaning it
-never fails.
+对于服务器用例，标准输出（stdout）通常用作日志，通常不会有意义地阻塞、异步或易错。它只是程序发送消息并忽略的地方。
+一种选择是为此类用例提供专用API，具有允许打印字符串的一个不返回`result`的单一函数，这意味着它永远不会失败。
 
-However, it'd only be a minor simplification in practice, and dedicated cloud
-or edge use cases should ideally migrate to more specialized worlds than the
-wasi-cli world anyway, as they can result in much greater simplifications, so
-this doesn't seem worthwhile.
+然而，在实践中这只是较小的简化，专有云或边缘用例理想情况下应该迁移到比wasi-cli world更专业的领域，因为它们可以提供更大的简化，因此这似乎(提供专用API)并不值得。
 
-#### Should stderr be an `output-stream`?
+#### stderr应该是`output-stream`吗？（Should stderr be an `output-stream`?）
 
-This is similar to the question for stdout, but for standard error (stderr),
-it's a little more tempting to do something like this because stderr is used
-in this logging style by many kinds of applications.
+这与stdout的问题类似，但对于标准错误（stderr），做这样的事情更有吸引力，因为stderr在许多类型的应用程序中以这种日志记录风格使用。。
 
-However, it seems better overall to keep stderr consistent with stdout, and
-focus our desires for simplification toward other worlds, which can achieve
-even greater simplifications.
+然而，总体而言，保持stderr与stdout一致，并将我们对简化的期望集中于其他可以实现更大简化的领域似乎更为合适。
 
-#### Should environment variables be arguments to `command`?
+#### 环境变量应该作为`command`的参数吗？（Should environment variables be arguments to `command`?）
 
-Environment variables are useful in some non-cli use cases, so leaving them
-as separate imports means they can be used from worlds that don't have a
-`command` entrypoint.
+环境变量在某些非命令行用例中很有用，因此将它们保留为单独的导入意味着它们可以在没有`command`入口的world中被使用。
 
-### Stakeholder Interest & Feedback
+### 项目相关方利益 & 反馈（Stakeholder Interest & Feedback）
 
-TODO before entering Phase 3.
+进入第3阶段之前的TODO。
 
-[This should include a list of implementers who have expressed interest in implementing the proposal]
+[这应包括有兴趣实施该提案的实施者名单]
 
-### References & acknowledgements
+### 参考文献 & 致谢（References & acknowledgements）
 
-The concept of wasi-cli has been in development for over a year since the proposal is
-posted here, and many people have contributed ideas that have influenced.  Many thanks
-for valuable feedback and advice in particular from:
+wasi-cli的概念自发布以来已经开发了一年多，许多人贡献了有影响力的想法。非常感谢以下人士提供的宝贵反馈和建议：
 
 - Luke Wagner
 - Pat Hickey
