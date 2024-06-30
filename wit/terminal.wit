@@ -1,49 +1,39 @@
-/// Terminal input.
+/// 终端输入。
 ///
-/// In the future, this may include functions for disabling echoing,
-/// disabling input buffering so that keyboard events are sent through
-/// immediately, querying supported features, and so on.
+/// 未来，它可能包含用于禁用回显、禁用输入缓冲以便键盘事件立即发送、查询支持的功能等功能。
 interface terminal-input {
-    /// The input side of a terminal.
+    /// 终端的输入端。
     resource terminal-input;
 }
 
-/// Terminal output.
+/// 终端输出。
 ///
-/// In the future, this may include functions for querying the terminal
-/// size, being notified of terminal size changes, querying supported
-/// features, and so on.
+/// 未来，它可能包含用于查询终端大小、接收终端大小变化通知、查询支持的功能等功能。
 interface terminal-output {
-    /// The output side of a terminal.
+    /// 终端的输出端。
     resource terminal-output;
 }
 
-/// An interface providing an optional `terminal-input` for stdin as a
-/// link-time authority.
+/// 接口提供可选的`terminal-input`作为链接时间授权（link-time authority）用于stdin。
 interface terminal-stdin {
     use terminal-input.{terminal-input};
 
-    /// If stdin is connected to a terminal, return a `terminal-input` handle
-    /// allowing further interaction with it.
+    /// 如果stdin连接到终端，则返回一个`terminal-input`句柄，允许进一步与其交互。
     get-terminal-stdin: func() -> option<terminal-input>;
 }
 
-/// An interface providing an optional `terminal-output` for stdout as a
-/// link-time authority.
+/// 接口提供可选的`terminal-output`作为链接时间授权（link-time authority）用于stdout。
 interface terminal-stdout {
     use terminal-output.{terminal-output};
 
-    /// If stdout is connected to a terminal, return a `terminal-output` handle
-    /// allowing further interaction with it.
+    /// 如果stdout连接到终端，则返回一个`terminal-output`句柄，允许进一步与其交互。
     get-terminal-stdout: func() -> option<terminal-output>;
 }
 
-/// An interface providing an optional `terminal-output` for stderr as a
-/// link-time authority.
+/// 接口提供可选的`terminal-output`作为链接时间授权（link-time authority）用于stderr。
 interface terminal-stderr {
     use terminal-output.{terminal-output};
 
-    /// If stderr is connected to a terminal, return a `terminal-output` handle
-    /// allowing further interaction with it.
+    /// 如果stderr连接到终端，则返回一个`terminal-output`句柄，允许进一步与其交互。
     get-terminal-stderr: func() -> option<terminal-output>;
 }
