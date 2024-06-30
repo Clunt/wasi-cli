@@ -20,18 +20,18 @@ WASI CLI必须至少有两个完整独立的实现。
 
 ## 目录（Table of Contents）
 
-- [Introduction](#introduction)
-- [Goals [or Motivating Use Cases, or Scenarios]](#goals-or-motivating-use-cases-or-scenarios)
-- [Non-goals](#non-goals)
-- [API walk-through](#api-walk-through)
-  - [Use case 1](#use-case-1)
-  - [Use case 2](#use-case-2)
-- [Detailed design discussion](#detailed-design-discussion)
-  - [Should stdout be an `output-stream`?](#should-stdout-be-an-output-stream)
-  - [Should stderr be an `output-stream`?](#should-stderr-be-an-output-stream)
-  - [Should environment variables be arguments to `command`?](#should-environment-variables-be-arguments-to-command)
-- [Stakeholder Interest & Feedback](#stakeholder-interest--feedback)
-- [References & acknowledgements](#references--acknowledgements)
+- [介绍（Introduction）](#介绍introduction)
+- [目标（Goals）](#目标goals)
+- [非目标（Non-goals）](#非目标non-goals)
+- [API详解（API walk-through）](#API详解api-walk-through)
+  - [用例1](#用例1)
+  - [用例1](#用例1)
+- [详细设计讨论（Detailed design discussion）](#详细设计讨论detailed-design-discussion)
+  - [stdout应该是`output-stream`吗？（Should stdout be an `output-stream`?）](#stdout应该是output-stream吗should-stdout-be-an-output-stream)
+  - [stderr应该是`output-stream`吗？（Should stderr be an `output-stream`?）](#stderr应该是output-stream吗should-stderr-be-an-output-stream)
+  - [环境变量应该作为`command`的参数吗？（Should environment variables be arguments to `command`?）](#环境变量应该作为command的参数吗should-environment-variables-be-arguments-to-command)
+- [项目相关方利益 & 反馈（Stakeholder Interest & Feedback）](#项目相关方利益--反馈stakeholder-interest--feedback)
+- [参考文献 & 致谢（References & acknowledgements）](#参考文献--致谢references--acknowledgements)
 
 ### 介绍（Introduction）
 
